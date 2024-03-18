@@ -10,16 +10,6 @@ import (
 
 
 func main() {
-	/*weekMenu := foodMenu.GetThisWeek()
-
-	for _, menu := range weekMenu {
-		fmt.Printf(
-			"날짜 : %s\n아침 : %s\n점심 : %s\n저녁 : %s\n\n",
-			menu.Date, menu.Breakfast, menu.Lunch, menu.Dinner,
-		)
-	}*/
-
-
 	menu := foodMenu.GetToday()
 	
 	if menu.Table == nil {

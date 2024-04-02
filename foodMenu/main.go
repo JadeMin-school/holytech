@@ -10,17 +10,17 @@ import (
 
 type MenuTable struct {
 	// 아침
-	Breakfast string
+	Breakfast string `json:"breakfast"`
 	// 점심
-	Lunch string
+	Lunch string `json:"lunch"`
 	// 저녁
-	Dinner string
+	Dinner string `json:"dinner"`
 }
 type Menu struct {
 	// 학식 날짜
-	Date string
+	Date string `json:"date"`
 	// 학식 메뉴
-	Table *MenuTable
+	Table *MenuTable `json:"table"`
 }
 
 

@@ -1,27 +1,25 @@
 package main
 
 import (
-	foodMenu "holytech/foodMenu"
+	fiber "github.com/gofiber/fiber/v2"
 )
 import (
-	fiber "github.com/gofiber/fiber/v2"
+	foodMenu "holytech/foodMenu"
 )
 
 var (
 	app *fiber.App
 )
 
-
-
 func init() {
 	app = fiber.New()
 }
 
-func main() {
-	menu := foodMenu.GetToday()
 
+
+func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(menu)
+		return c.JSON(foodMenu.GetToday())
 	})
 
 	app.Listen(":3000")

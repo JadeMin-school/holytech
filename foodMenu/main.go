@@ -1,68 +1,26 @@
 package foodMenu
 
 import (
-	http "net/http"
-	regexp "regexp"
+	fmt "fmt"
 	time "time"
-
-	goquery "github.com/PuerkitoBio/goquery"
 )
 
-type MenuTable struct {
-	// 아침
-	Breakfast string `json:"breakfast"`
-	// 점심
-	Lunch string `json:"lunch"`
-	// 저녁
-	Dinner string `json:"dinner"`
-}
-type Menu struct {
-	// 학식 날짜
-	Date string `json:"date"`
-	// 학식 메뉴
-	Table *MenuTable `json:"table"`
+var (
+	weekMenu []*Menu
+	todayMenu *Menu
+)
+
+func init() {
+	weekMenu = getThisWeek()
+	todayMenu = filterToday(weekMenu)
 }
 
 
 
-// 이번주 메뉴 구하기
-func GetThisWeek() []*Menu {
-	result := []*Menu{}
-	re := regexp.MustCompile(`\s{2,}|\n+|document.write\(getDay2\('([0-9]{4}-[0-9]{2}-[0-9]{2}).*`)
-
-	response, err := http.Get("https://www.kopo.ac.kr/incheon/content.do?menu=6893")
-	if err != nil {
-		panic(err)
-	}
-	defer response.Body.Close()
-
-	html, err := goquery.NewDocumentFromReader(response.Body)
-	if err != nil {
-		panic(err)
-	}
-
-	tr := html.Find(".tbl_table.menu > tbody > tr")
-	tr.Each(func(_ int, s *goquery.Selection) {
-		td := s.Find("td")
-
-		result = append(result, &Menu{
-			Date: re.ReplaceAllString(td.Eq(0).Text(), "$1"),
-			Table: &MenuTable{
-				Breakfast: re.ReplaceAllString(td.Eq(1).Text(), ""),
-				Lunch: re.ReplaceAllString(td.Eq(2).Text(), ""),
-				Dinner: re.ReplaceAllString(td.Eq(3).Text(), ""),
-			},
-		})
-	})
-
-	return result
-}
-
-// 오늘 메뉴 구하기
-func GetToday() *Menu {
+// 한 주 메뉴 리스트에서 오늘 메뉴만 필터링
+func filterToday(weekMenu []*Menu) *Menu {
 	currentDate := time.Now().Format("2006-01-02")
 
-	weekMenu := GetThisWeek()
 	for _, menu := range weekMenu {
 		if menu.Date == currentDate {
 			return menu
@@ -73,4 +31,21 @@ func GetToday() *Menu {
 		Date: currentDate,
 		Table: nil,
 	}
+}
+
+// 오늘 메뉴 구하기
+func GetToday() *Menu {
+	currentDate := time.Now().Format("2006-01-02")
+
+	if todayMenu.Date != currentDate {
+		fmt.Print("메모리에 캐시된 오늘의 메뉴가 현재 날짜와 불일치합니다.\n오늘의 메뉴를 다시 로딩합니다.\n\n")
+		todayMenu = filterToday(weekMenu)
+	}
+	if todayMenu.Table == nil {
+		fmt.Print("메모리에 캐시된 이번주 메뉴에서 현재 날짜에 해당하는 메뉴를 찾을 수 없습니다.\n이번주 메뉴를 다시 로딩합니다.\n\n")
+		weekMenu = getThisWeek()
+		todayMenu = filterToday(weekMenu)
+	}
+
+	return todayMenu
 }

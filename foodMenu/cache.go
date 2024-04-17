@@ -15,7 +15,7 @@ func isCached() bool {
 }
 
 // 캐시에 저장
-func saveCache(weekMenu []*Menu) {
+func saveWeekToCache(weekMenu []*Menu) {
 	file, err := os.Create("./cache.json")
 	if err != nil {
 		panic(err)
@@ -27,7 +27,7 @@ func saveCache(weekMenu []*Menu) {
 }
 
 // 캐시에서 불러오기
-func loadCache() []*Menu {
+func loadWeekFromCache() []*Menu {
 	weekMenu := []*Menu{}
 
 	file, err := os.Open("./cache.json")

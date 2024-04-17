@@ -29,10 +29,10 @@ func getThisWeek() []*Menu {
 	var weekMenu []*Menu
 
 	if isCached() {
-		weekMenu = loadCache()
+		weekMenu = loadWeekFromCache()
 	} else {
 		weekMenu = parseThisWeek()
-		saveCache(weekMenu)
+		saveWeekToCache(weekMenu)
 	}
 
 	return weekMenu

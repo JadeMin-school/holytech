@@ -18,8 +18,11 @@ func init() {
 
 
 func main() {
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Get("/today", func(c *fiber.Ctx) error {
 		return c.JSON(foodMenu.GetToday())
+	})
+	app.Get("/week", func(c *fiber.Ctx) error {
+		return c.JSON(foodMenu.GetThisWeek())
 	})
 
 	app.Listen(":3000")

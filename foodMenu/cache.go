@@ -7,7 +7,6 @@ import (
 
 
 
-
 // 캐시 여부 확인
 func isCached() bool {
 	_, err := os.Stat("./cache.json")

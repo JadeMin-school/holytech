@@ -17,7 +17,7 @@ func init() {
 
 
 
-// 캐시 초기화
+// 메모리 캐싱
 func hitCache() {
 	currentDate := time.Now().Format("2006-01-02")
 

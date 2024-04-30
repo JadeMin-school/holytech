@@ -2,6 +2,7 @@ package main
 
 import (
 	fiber "github.com/gofiber/fiber/v2"
+	cors "github.com/gofiber/fiber/v2/middleware/cors"
 )
 import (
 	foodMenu "holytech/foodMenu"
@@ -18,6 +19,11 @@ func init() {
 
 
 func main() {
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+	}))
+	
+
 	app.Get("/today", func(c *fiber.Ctx) error {
 		return c.JSON(foodMenu.GetToday())
 	})

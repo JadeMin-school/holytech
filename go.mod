@@ -4,7 +4,7 @@ go 1.22.1
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.1
-	github.com/gofiber/fiber/v2 v2.52.4
+	github.com/gofiber/fiber/v2 v2.52.5
 )
 
 require (
